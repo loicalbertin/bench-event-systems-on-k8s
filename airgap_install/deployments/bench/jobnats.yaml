@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bench-job-nats
+  namespace: nats-io
+spec:
+  template:
+    spec:
+      containers:
+      - name: bench
+        image: eb-bench:latest
+        command: ["/app/bench"]
+        args: ["--system", "nats", "--servers", "nats://nats:4222", "--topic", "bench.js", "--messages", "200000", "--size", "512", "--concurrency", "128"]
+      restartPolicy: Never
+  backoffLimit: 4

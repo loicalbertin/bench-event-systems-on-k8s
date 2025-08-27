@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bench-job-kafka
+  namespace: kafka
+spec:
+  template:
+    spec:
+      containers:
+      - name: bench
+        image: eb-bench:latest
+        command: ["/app/bench"]
+        args: ["--system", "kafka", "--servers", "kafka-cluster-kafka-brokers:9092", "--topic", "bench", "--messages", "200000", "--size", "512", "--concurrency", "128"]
+      restartPolicy: Never
+  backoffLimit: 4
